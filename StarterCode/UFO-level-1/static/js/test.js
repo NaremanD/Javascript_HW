@@ -14,30 +14,21 @@ tableData.forEach(function(entry) {
 
 const input = d3.select("input")
 const button = d3.select("#filter-btn");
-inputValues = {};
+
 const handler = function(){
 // // Prevent the page from refreshing
     d3.event.preventDefault();
 //--2--filter the data for the data inputed
-    let NewData = tableData
-    const query = d3.select(this).select("input");
-    const queryvalue = query.property("value");
-    const queryid = query.attr("id");
-    //console.log(query);
-    inputValues[queryid] = queryvalue;
-    console.log(inputValues);
-    Object.entries(inputValues).forEach(function([key,value]){
-
-    
-    const NewData = NewData.filter(d => d[key] === value)
-    console.log(NewData);
-    });
+    const query = d3.select("#datetime").property("value");
+    console.log(query);
+    const filtered_results = tableData.filter(d => d.datetime === query)
+    console.log(filtered_results);
 
     const tbody = d3.select("tbody");
     tbody.html("");
 //--3--use the foreach to append the data of each cell
 //--4--// loop through table using pbject entries
-    NewData.forEach(function(entry) {
+    filtered_results.forEach(function(entry) {
     const row = tbody.append("tr")
     Object.entries(entry).forEach(function([key,value]) {
     row.append("td").text(value);
@@ -45,4 +36,6 @@ const handler = function(){
 })
 }
 
+
+input.on("change", handler)
 button.on("click", handler)
